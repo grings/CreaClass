@@ -12,6 +12,7 @@ object CreaIntefaceClasseView: TCreaIntefaceClasseView
   Font.Style = []
   OldCreateOrder = False
   WindowState = wsMaximized
+  OnCreate = FormCreate
   DesignSize = (
     1437
     659)
@@ -32,7 +33,7 @@ object CreaIntefaceClasseView: TCreaIntefaceClasseView
     Caption = 'Variabile'
   end
   object lblClasse: TLabel
-    Left = 696
+    Left = 680
     Top = 8
     Width = 31
     Height = 13

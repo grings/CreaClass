@@ -31,6 +31,7 @@ type
     edtInterface: TEdit;
     lblClasse: TLabel;
     lblInterface1: TLabel;
+    procedure FormCreate(Sender: TObject);
     procedure btnInterfaceCreaClasseClick(Sender: TObject);
     procedure btnDaCampiClasseEInterfaceClick(Sender: TObject);
   end;
@@ -46,6 +47,11 @@ uses
   Spring;
 
 {$R *.dfm}
+
+procedure TCreaIntefaceClasseView.FormCreate(Sender: TObject);
+begin
+  btnInterfaceCreaClasse.Enabled := False;
+end;
 
 procedure TCreaIntefaceClasseView.btnInterfaceCreaClasseClick(Sender: TObject);
 var
@@ -133,13 +139,17 @@ procedure TCreaIntefaceClasseView.btnDaCampiClasseEInterfaceClick(Sender: TObjec
 var
   Classe: IList<string>;
   DictionaryVariabile: IDictionary<string, string>;
+  Interfaci: IList<string>;
   NomeClasse: string;
   NomeInterface: string;
   Parte: IList<string>;
   Riga: string;
+  TmpFunctionGet: string;
+  TmpFunctionSet: string;
   VariabileOrdenate: TArray<string>;
 begin
   DictionaryVariabile := TCollections.CreateDictionary<string, string>;
+  Interfaci := TCollections.CreateList<string>;
   Classe := TCollections.CreateList<string>;
   Parte := TCollections.CreateList<string>;
 
@@ -152,6 +162,11 @@ begin
     Parte.AddRange(Riga.Split([':']));
     DictionaryVariabile.Add(Parte.First.Trim, Parte.Last.Trim.Replace(';', EmptyStr));
   end;
+
+  Interfaci.AddRange(['interface', EmptyStr]);
+  Interfaci.Add('type');
+  Interfaci.Add(Format('  %s = interface (IInterface)', [NomeInterface]));
+  Interfaci.Add(Format('  %s', [TGUID.NewGuid.ToString]));
 
   Classe.AddRange(['interface', EmptyStr]);
   Classe.Add('type');
@@ -168,8 +183,14 @@ begin
 
   for Riga in DictionaryVariabile.Keys.Ordered do
   begin
-    Classe.Add(Format('    function %s: %s; overload;', [Riga.Remove(0, 1), DictionaryVariabile[Riga]]));
-    Classe.Add(Format('    function %s(Value: %s): %s; overload;', [Riga.Remove(0, 1), DictionaryVariabile[Riga], NomeInterface]));
+    TmpFunctionGet := Format('    function %s: %s; overload;', [Riga.Remove(0, 1), DictionaryVariabile[Riga]]);
+    TmpFunctionSet := Format('    function %s(Value: %s): %s; overload;', [Riga.Remove(0, 1), DictionaryVariabile[Riga], NomeInterface]);
+
+    Interfaci.Add(TmpFunctionGet);
+    Interfaci.Add(TmpFunctionSet);
+
+    Classe.Add(TmpFunctionGet);
+    Classe.Add(TmpFunctionSet);
   end;
 
   Classe.AddRange(['  end;', EmptyStr]);
@@ -193,9 +214,17 @@ begin
     Classe.AddRange(['begin', '  Result := Self;', Format('  %s := Value;', [Riga]), 'end;', EmptyStr]);
   end;
 
+  Interfaci.AddRange(['  end;', EmptyStr, 'implementation', EmptyStr, 'end.']);
+
   Classe.Add('end.');
 
+  mmoInterface.Lines.Clear;
   mmoClasse.Lines.Clear;
+
+  for Riga in Interfaci do
+  begin
+    mmoInterface.Lines.Add(Riga);
+  end;
 
   for Riga in Classe do
   begin
