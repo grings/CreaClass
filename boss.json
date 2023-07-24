@@ -1,0 +1,12 @@
+{
+	"name": "CreaClass",
+	"description": "Serve per creare Classi",
+	"version": "1.0.0",
+	"homepage": "",
+	"mainsrc": "./Source",
+	"projects": [],
+	"dependencies": {
+		"https://bitbucket.org/sglienke/spring4d": "^1.2.6",
+		"https://bitbucket.org/sglienke/spring4d/src/master/": "^1.2.6"
+	}
+}

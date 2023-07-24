@@ -2,7 +2,7 @@ program CreaClasse;
 
 uses
   Vcl.Forms,
-  View.Principale in 'View.Principale.pas' {CreaIntefaceClasseView};
+  View.Principale in 'Source\View.Principale.pas' {CreaIntefaceClasseView};
 
 {$R *.res}
 

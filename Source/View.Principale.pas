@@ -17,7 +17,7 @@ uses
 type
   TEdit = class(Vcl.StdCtrls.TEdit)
   public
-    function TextTrim: string;
+    function ToText: string;
   end;
 
   TCreaIntefaceClasseView = class(TForm)
@@ -153,7 +153,7 @@ begin
   Classe := TCollections.CreateList<string>;
   Parte := TCollections.CreateList<string>;
 
-  NomeInterface := edtInterface.TextTrim;
+  NomeInterface := edtInterface.ToText.Trim;
   NomeClasse := Format('T%s', [NomeInterface.Remove(0, 1)]).Trim;
 
   for Riga in mmoVariabile.Lines.ToStringArray do
@@ -166,7 +166,7 @@ begin
   Interfaci.AddRange(['interface', EmptyStr]);
   Interfaci.Add('type');
   Interfaci.Add(Format('  %s = interface (IInterface)', [NomeInterface]));
-  Interfaci.Add(Format('  %s', [TGUID.NewGuid.ToString]));
+  Interfaci.Add(Format('  [''%s'']', [TGUID.NewGuid.ToString]));
 
   Classe.AddRange(['interface', EmptyStr]);
   Classe.Add('type');
@@ -232,7 +232,7 @@ begin
   end;
 end;
 
-function TEdit.TextTrim: string;
+function TEdit.ToText: string;
 begin
   Result := Self.Text;
 end;

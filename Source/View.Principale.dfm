@@ -10,13 +10,11 @@ object CreaIntefaceClasseView: TCreaIntefaceClasseView
   Font.Height = -11
   Font.Name = 'Tahoma'
   Font.Style = []
-  OldCreateOrder = False
   WindowState = wsMaximized
   OnCreate = FormCreate
   DesignSize = (
     1437
     659)
-  PixelsPerInch = 96
   TextHeight = 13
   object lblInterface: TLabel
     Left = 8
@@ -69,6 +67,8 @@ object CreaIntefaceClasseView: TCreaIntefaceClasseView
     Anchors = [akLeft, akTop, akRight, akBottom]
     ScrollBars = ssBoth
     TabOrder = 2
+    ExplicitWidth = 743
+    ExplicitHeight = 618
   end
   object btnInterfaceCreaClasse: TButton
     Left = 599
